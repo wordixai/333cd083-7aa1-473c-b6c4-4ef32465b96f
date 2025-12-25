@@ -17,8 +17,8 @@ const ScannerDemo = () => {
                     <img
                       src="https://images.unsplash.com/photo-1621939514649-280e2ee25f60?w=400&h=600&fit=crop"
                       alt="Food product label"
-                      className="w-full h-full object-cover opacity-80"
-                    />
+                      className="w-full h-full object-cover opacity-80" />
+
 
                     {/* Scan overlay */}
                     <div className="absolute inset-0 border-2 border-primary/50 rounded-2xl">
@@ -85,32 +85,32 @@ const ScannerDemo = () => {
                 <br />
                 <span className="gradient-text">Understands Food</span>
               </h2>
-              <p className="text-lg text-muted-foreground leading-relaxed">
-                Most scanners still rely on outdated databases – limited, inaccurate, and blind to what really matters.
-                Emma is different. Our AI reads any label or barcode from any country, translates it, and explains
-                in plain words what's safe and what's not.
+              <p className='text-muted-foreground text-lg leading-relaxed'>Most scanners still rely on outdated databases – limited, inaccurate, and blind to what really matters. Emma is different. Our AI reads any label or barcode from any country, and explains in plain words what's safe and what's not.
+
+
+
               </p>
               <ul className="space-y-4">
                 {[
-                  "Reads labels in any language",
-                  "Identifies hidden sugars and additives",
-                  "Explains ingredients in simple terms",
-                  "Works offline – your data stays private"
-                ].map((item, index) => (
-                  <li key={index} className="flex items-center gap-3">
+                "Reads labels in any language",
+                "Identifies hidden sugars and additives",
+                "Explains ingredients in simple terms",
+                "Works offline – your data stays private"].
+                map((item, index) =>
+                <li key={index} className="flex items-center gap-3">
                     <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center">
                       <div className="w-2 h-2 rounded-full bg-primary" />
                     </div>
                     <span className="text-foreground">{item}</span>
                   </li>
-                ))}
+                )}
               </ul>
             </div>
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>);
+
 };
 
 export default ScannerDemo;
