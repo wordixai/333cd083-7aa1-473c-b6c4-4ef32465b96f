@@ -1,7 +1,11 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Scan, Shield, Globe } from "lucide-react";
+import ScannerModal from "./ScannerModal";
 
 const HeroSection = () => {
+  const [isScannerOpen, setIsScannerOpen] = useState(false);
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background image */}
@@ -43,7 +47,7 @@ const HeroSection = () => {
 
           {/* CTA buttons */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16 opacity-0 animate-fade-in" style={{ animationDelay: "0.3s" }}>
-            <Button variant="hero" size="xl">
+            <Button variant="hero" size="xl" onClick={() => setIsScannerOpen(true)}>
               <Scan className="w-5 h-5" />
               Start Scanning Free
             </Button>
@@ -73,6 +77,8 @@ const HeroSection = () => {
           </div>
         </div>
       </div>
+
+      <ScannerModal isOpen={isScannerOpen} onClose={() => setIsScannerOpen(false)} />
     </section>
   );
 };
