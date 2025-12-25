@@ -3,7 +3,17 @@ import { Scan, Shield, Globe } from "lucide-react";
 
 const HeroSection = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-hero-gradient">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      {/* Background image */}
+      <div className="absolute inset-0">
+        <img
+          src="https://images.unsplash.com/photo-1490818387583-1baba5e638af?w=1920&q=80"
+          alt="Fresh healthy food background"
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-background/85 backdrop-blur-sm" />
+      </div>
+
       {/* Decorative elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-20 left-10 w-72 h-72 bg-primary/10 rounded-full blur-3xl animate-float" />
