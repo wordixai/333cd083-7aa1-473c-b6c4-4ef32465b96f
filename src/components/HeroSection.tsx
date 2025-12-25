@@ -7,11 +7,11 @@ const HeroSection = () => {
       {/* Background image */}
       <div className="absolute inset-0">
         <img
-          src="https://images.unsplash.com/photo-1490818387583-1baba5e638af?w=1920&q=80"
-          alt="Fresh healthy food background"
-          className="w-full h-full object-cover"
+          src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=1920&q=80"
+          alt="Colorful fresh vegetables and fruits"
+          className="w-full h-full object-cover saturate-125"
         />
-        <div className="absolute inset-0 bg-background/85 backdrop-blur-sm" />
+        <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-background/60 to-background/80" />
       </div>
 
       {/* Decorative elements */}
