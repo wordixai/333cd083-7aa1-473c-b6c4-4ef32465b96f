@@ -22,7 +22,7 @@ const HeroSection = () => {
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6 opacity-0 animate-fade-in" style={{ animationDelay: "0.1s" }}>
             Meet <span className="gradient-text">Emma</span>
             <br />
-            <span className="text-foreground/80">Your AI Food Scanner</span>
+            <span className="gradient-text">Your AI Food Scanner</span>
           </h1>
 
           {/* Subtitle */}
