@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { X, Camera, Zap, AlertCircle, CheckCircle, XCircle } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { X, Camera, Zap, AlertCircle, CheckCircle, XCircle, Upload, ImagePlus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface ScannerModalProps {
@@ -19,14 +19,28 @@ const ScannerModal = ({ isOpen, onClose }: ScannerModalProps) => {
   const [scanning, setScanning] = useState(false);
   const [scanned, setScanned] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [uploadedImage, setUploadedImage] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (!isOpen) {
       setScanning(false);
       setScanned(false);
       setProgress(0);
+      setUploadedImage(null);
     }
   }, [isOpen]);
+
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setUploadedImage(e.target?.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const handleScan = () => {
     setScanning(true);
@@ -49,6 +63,7 @@ const ScannerModal = ({ isOpen, onClose }: ScannerModalProps) => {
     setScanning(false);
     setScanned(false);
     setProgress(0);
+    setUploadedImage(null);
   };
 
   if (!isOpen) return null;
@@ -62,9 +77,9 @@ const ScannerModal = ({ isOpen, onClose }: ScannerModalProps) => {
       />
 
       {/* Modal */}
-      <div className="relative w-full max-w-lg mx-4 bg-card rounded-3xl shadow-2xl overflow-hidden animate-fade-in">
+      <div className="relative w-full max-w-lg mx-4 bg-card rounded-3xl shadow-2xl overflow-hidden animate-fade-in max-h-[90vh] overflow-y-auto">
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-border">
+        <div className="flex items-center justify-between p-4 border-b border-border sticky top-0 bg-card z-10">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
               <Camera className="w-4 h-4 text-primary" />
@@ -83,27 +98,45 @@ const ScannerModal = ({ isOpen, onClose }: ScannerModalProps) => {
         <div className="p-6">
           {!scanned ? (
             <>
+              {/* Hidden file input */}
+              <input
+                type="file"
+                ref={fileInputRef}
+                onChange={handleImageUpload}
+                accept="image/*"
+                className="hidden"
+              />
+
               {/* Scanner view */}
-              <div className="relative aspect-[4/3] bg-muted rounded-2xl overflow-hidden mb-6">
-                <img
-                  src="https://images.unsplash.com/photo-1604719312566-8912e9227c6a?w=600&q=80"
-                  alt="Product to scan"
-                  className="w-full h-full object-cover"
-                />
+              <div className="relative aspect-[4/3] bg-muted rounded-2xl overflow-hidden mb-4">
+                {uploadedImage ? (
+                  <img
+                    src={uploadedImage}
+                    alt="Uploaded product"
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full flex flex-col items-center justify-center text-muted-foreground">
+                    <ImagePlus className="w-16 h-16 mb-4 opacity-50" />
+                    <p className="text-sm">Upload an image to scan</p>
+                  </div>
+                )}
 
                 {/* Scan overlay */}
-                <div className="absolute inset-4 border-2 border-primary/50 rounded-xl">
-                  <div className="absolute top-2 left-2 w-6 h-6 border-l-3 border-t-3 border-primary rounded-tl-lg" />
-                  <div className="absolute top-2 right-2 w-6 h-6 border-r-3 border-t-3 border-primary rounded-tr-lg" />
-                  <div className="absolute bottom-2 left-2 w-6 h-6 border-l-3 border-b-3 border-primary rounded-bl-lg" />
-                  <div className="absolute bottom-2 right-2 w-6 h-6 border-r-3 border-b-3 border-primary rounded-br-lg" />
+                {uploadedImage && (
+                  <div className="absolute inset-4 border-2 border-primary/50 rounded-xl">
+                    <div className="absolute top-2 left-2 w-6 h-6 border-l-3 border-t-3 border-primary rounded-tl-lg" />
+                    <div className="absolute top-2 right-2 w-6 h-6 border-r-3 border-t-3 border-primary rounded-tr-lg" />
+                    <div className="absolute bottom-2 left-2 w-6 h-6 border-l-3 border-b-3 border-primary rounded-bl-lg" />
+                    <div className="absolute bottom-2 right-2 w-6 h-6 border-r-3 border-b-3 border-primary rounded-br-lg" />
 
-                  {scanning && (
-                    <div
-                      className="absolute inset-x-0 h-1 bg-gradient-to-r from-transparent via-primary to-transparent animate-scan-line"
-                    />
-                  )}
-                </div>
+                    {scanning && (
+                      <div
+                        className="absolute inset-x-0 h-1 bg-gradient-to-r from-transparent via-primary to-transparent animate-scan-line"
+                      />
+                    )}
+                  </div>
+                )}
 
                 {/* Progress indicator */}
                 {scanning && (
@@ -126,13 +159,24 @@ const ScannerModal = ({ isOpen, onClose }: ScannerModalProps) => {
                 )}
               </div>
 
+              {/* Upload button */}
+              <Button
+                variant="outline"
+                className="w-full mb-3"
+                onClick={() => fileInputRef.current?.click()}
+                disabled={scanning}
+              >
+                <Upload className="w-5 h-5" />
+                {uploadedImage ? "Change Image" : "Upload Food Label"}
+              </Button>
+
               {/* Scan button */}
               <Button
                 variant="hero"
                 size="xl"
                 className="w-full"
                 onClick={handleScan}
-                disabled={scanning}
+                disabled={scanning || !uploadedImage}
               >
                 {scanning ? (
                   <>
@@ -148,7 +192,7 @@ const ScannerModal = ({ isOpen, onClose }: ScannerModalProps) => {
               </Button>
 
               <p className="text-center text-sm text-muted-foreground mt-4">
-                Point your camera at any food label or barcode
+                Upload a photo of any food label to analyze ingredients
               </p>
             </>
           ) : (
